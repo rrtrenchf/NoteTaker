@@ -3,6 +3,8 @@
 var express = require("express");
 var path = require("path");
 
+// var index = require("./public/assets/js/index")
+
 // Sets up the Express App
 // =============================================================
 var app = express();
@@ -12,6 +14,11 @@ var PORT = 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+// // app.use(index)
+require("./routes/apiroutes.js")(app)
+require("./routes/htmlroutes.js")(app)
+
+ 
 
 
 
