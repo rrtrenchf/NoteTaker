@@ -9,7 +9,8 @@ var notes = require("../db/db.json");
 // var index = require("../public/assets/js/index")
 // var waitListData = require("../data/waitinglistData");
 
-// var fs = require("fs");
+var fs = require("fs");
+const { response } = require("express");
 
 
 // ===============================================================================
@@ -30,6 +31,9 @@ module.exports = function(app) {
     console.log("Nodedata")
     res.json(notes);
   });
+
+  
+  
   
   // API POST Requests
   // Below code handles when a user submits a form and thus submits data to the server.
@@ -38,16 +42,30 @@ module.exports = function(app) {
   // (ex. User fills out a reservation request... this data is then sent to the server...
   // Then the server saves the data to the tableData array)
   // ---------------------------------------------------------------------------
-
+// get current notes array from file and add newNote to an array
   app.post("/api/notes", function(req, res){
-    //   var newNote = req.body
-    //   notes.push(newNote)
+      var newNote = req.body
+      var allNotes = [...notes,newNote]
+      //this is in memory.
+      var notesWithIds = allNotes.map((note, index) => {
+        return {...note, id: index + 1}
+     })
+
+    //This writes it to disk
+    fs.writeFileSync("./db/db.json", JSON.stringify(notesWithIds));
+    
+
+      //notes.push(newNote,notesWithIds)
+      console.log(allNotes)
+      console.log(notesWithIds)
+      console.log(newNote)
 
    
-    return res.json(notes)
+    return res.json(notesWithIds)
     
 
   });
+ 
 
 //     // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
 //     // It will do this by sending out the value "true" have a table
@@ -70,22 +88,27 @@ module.exports = function(app) {
   // I added this below code so you could clear out the table while working with the functionality.
   // Don"t worry about it!
 
-//   app.delete("/api/clear", function(req, res) {
-//     // Empty out the arrays of data
-//     notes.length = 0;
+  app.delete("/api/clear", function(req, res) {
+    // Empty out the arrays of data
+    allNotes.length = 0;
+
+    app.delete("/api/clear/:notes/"+"id" , function(req, res) {
+        const id = req.params.id
+        for( i=1;i>allNotes;i++){
+        delete allNotes[id]
+        console.log("deleted")
+        return res.body
+        }
+       
+    
+        // fs.writeFileSync("./db/db.json", JSON.stringify(allNotes));
+    
+        // res.json({ ok: true });
+      });
     
 
-//     fs.writeFileSync("../db/db.json", JSON.stringify(notes, 0, 2));
+  });
 
-//     res.json({ ok: true });
-//   });
-
-//   app.delete("/api/clear/:notes", function(req, res) {
-//     // Empty out the arrays of data
-    
-
-//     fs.writeFileSync("../db/db.json", JSON.stringify(notes, 0, 2));
-
-//     res.json({ ok: true });
-//   });
+  
 };
+  

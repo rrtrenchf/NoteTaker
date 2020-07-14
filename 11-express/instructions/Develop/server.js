@@ -17,6 +17,8 @@ app.use(express.static("public"));
 // // app.use(index)
 require("./routes/apiroutes.js")(app)
 require("./routes/htmlroutes.js")(app)
+// require("../Develop/public/index.html")(app)
+// require("../Develop/public/notes.html")(app)
 
  
 
