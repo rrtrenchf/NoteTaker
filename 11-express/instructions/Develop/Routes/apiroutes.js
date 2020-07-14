@@ -28,7 +28,7 @@ module.exports = function(app) {
   
   app.get("/api/notes", function(req, res) {
   
-    console.log("Nodedata")
+    console.log("Notedata")
     res.json(notes);
   });
 
@@ -92,21 +92,20 @@ module.exports = function(app) {
     // Empty out the arrays of data
     allNotes.length = 0;
 
-    app.delete("/api/clear/:notes/"+"id" , function(req, res) {
-        const id = req.params.id
-        for( i=1;i>allNotes;i++){
-        delete allNotes[id]
-        console.log("deleted")
-        return res.body
-        }
-       
-    
-        // fs.writeFileSync("./db/db.json", JSON.stringify(allNotes));
-    
-        // res.json({ ok: true });
-      });
-    
+  });
+  app.delete("/api/notes/:id", function(req, res) {
+    const id = req.params.id
+    res.send(req.params)
+    // for( i=1;i>allNotes;i++){
+    // delete allNotes[id[i]]
+    // console.log("deleted")
+    // return res.body
+    // }
+   
 
+    // fs.writeFileSync("./db/db.json", JSON.stringify(allNotes));
+
+    // res.json({ ok: true });
   });
 
   
