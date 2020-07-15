@@ -11,9 +11,12 @@ module.exports = function(app) {
   app.get("/notes", function(req, res) {
      res.sendFile(path.join(__dirname, "../public/notes.html"));
   });
-// Must be last path or pages wil never change
+  app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "../public/index.html"));
+ });
+// If no matching route is found default to home. Must be last path or pages will never change
   app.get("*", function(req, res) {
     res.sendFile(path.join(__dirname, "../public/index.html"));
   });
-  // If no matching route is found default to home
+  
 };

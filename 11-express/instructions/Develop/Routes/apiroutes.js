@@ -50,9 +50,10 @@ module.exports = function(app) {
       var notesWithIds = allNotes.map((note, index) => {
         return {...note, id: index + 1}
      })
+     notes = notesWithIds
 
     //This writes it to disk
-    fs.writeFileSync("./db/db.json", JSON.stringify(notesWithIds));
+    fs.writeFileSync("./db/db.json", JSON.stringify(notesWithIds,0,2));
     
 
       //notes.push(newNote,notesWithIds)
@@ -88,24 +89,26 @@ module.exports = function(app) {
   // I added this below code so you could clear out the table while working with the functionality.
   // Don"t worry about it!
 
-  app.delete("/api/clear", function(req, res) {
-    // Empty out the arrays of data
-    allNotes.length = 0;
+  // app.delete("/api/clear", function(req, res) {
+  //   // Empty out the arrays of data
+  //   notes.length = 0;
 
-  });
+  // });
+  
+  
   app.delete("/api/notes/:id", function(req, res) {
-    const id = req.params.id
-    res.send(req.params)
-    // for( i=1;i>allNotes;i++){
-    // delete allNotes[id[i]]
-    // console.log("deleted")
-    // return res.body
-    // }
-   
+    const id = parseInt(req.params.id)
+    for(let i=0;i<notes.length;i++){
+      if (notes[i].id === id){
+        notes.splice(i,1)
+      }
+    }
+   console.log(notes)
 
-    // fs.writeFileSync("./db/db.json", JSON.stringify(allNotes));
+    fs.writeFileSync("./db/db.json", JSON.stringify(notes,0,2));
+    console.log(id)
 
-    // res.json({ ok: true });
+    res.json({ ok: true });
   });
 
   
